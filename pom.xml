@@ -43,7 +43,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.epam.homework.join_down.Runner</mainClass>
+                            <mainClass>com.nalivayko.lab2_string.Runner</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

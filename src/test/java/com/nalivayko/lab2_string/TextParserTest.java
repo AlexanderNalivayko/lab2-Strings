@@ -1,10 +1,11 @@
 package com.nalivayko.lab2_string;
 
+import com.nalivayko.lab2_string.text.Text;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TextParserTest {
+class TextParserTest {
 
     private static final String UNIQUE_WORDS_SENTENCE = "some unique words in one sentence.";
     private static final String MULTIPLE_REPEATS_SENTENCE = "dog dog, cat cat, fish fish.";
@@ -12,38 +13,85 @@ public class TextParserTest {
     private static final String REPEATS_DIF_CASE_SENTENCE = "Dog, dog.";
 
     @Test
-    public void shouldReturnZeroForNull() {
+    void shouldReturnZeroForNull() {
         int num = TextParser.getNumberOfSentencesWithWordRepeat(null);
         assertThat(num).isEqualTo(0);
     }
 
     @Test
-    public void shouldReturnZeroForEmpty() {
-        int num = TextParser.getNumberOfSentencesWithWordRepeat("");
+    void shouldReturnZeroForSentenceWithAllUniqueWords() {
+        Text text = TextParser.parseStringToText(UNIQUE_WORDS_SENTENCE);
+        int num = TextParser.getNumberOfSentencesWithWordRepeat(text);
         assertThat(num).isEqualTo(0);
     }
 
     @Test
-    public void shouldReturnZeroForSentenceWithAllUniqueWords() {
-        int num = TextParser.getNumberOfSentencesWithWordRepeat(UNIQUE_WORDS_SENTENCE);
-        assertThat(num).isEqualTo(0);
-    }
-
-    @Test
-    public void shouldReturnOneForOneSentenceWithMultipleWordRepeats() {
-        int num = TextParser.getNumberOfSentencesWithWordRepeat(MULTIPLE_REPEATS_SENTENCE);
+    void shouldReturnOneForOneSentenceWithMultipleWordRepeats() {
+        Text text = TextParser.parseStringToText(MULTIPLE_REPEATS_SENTENCE);
+        int num = TextParser.getNumberOfSentencesWithWordRepeat(text);
         assertThat(num).isEqualTo(1);
     }
 
     @Test
-    public void shouldReturnTwoForTwoSentencesWithRepeat() {
-        int num = TextParser.getNumberOfSentencesWithWordRepeat(SENTENCES_WITH_REPEAT);
+    void shouldReturnTwoForTwoSentencesWithRepeat() {
+        Text text = TextParser.parseStringToText(SENTENCES_WITH_REPEAT);
+        int num = TextParser.getNumberOfSentencesWithWordRepeat(text);
         assertThat(num).isEqualTo(2);
     }
 
     @Test
-    public void shouldReturnOneForSentenceWithRepeatsIgnoringCase() {
-        int num = TextParser.getNumberOfSentencesWithWordRepeat(REPEATS_DIF_CASE_SENTENCE);
+    void shouldReturnOneForSentenceWithRepeatsIgnoringCase() {
+        Text text = TextParser.parseStringToText(REPEATS_DIF_CASE_SENTENCE);
+        int num = TextParser.getNumberOfSentencesWithWordRepeat(text);
         assertThat(num).isEqualTo(1);
+    }
+
+    @Test
+    void shouldParseSignsNearWord() {
+        String sentence = "word, word.";
+        Text text = TextParser.parseStringToText(sentence);
+        assertThat(text.getSentences().get(0).getContent().get(1).getContent()).isEqualTo(",");
+    }
+
+    @Test
+    void shouldParseSignsNearWordSeparatedByParentheses() {
+        String sentence = "(word), word.";
+        Text text = TextParser.parseStringToText(sentence);
+        assertThat(text.getSentences().get(0).getContent().get(1).getContent()).isEqualTo(",");
+    }
+
+    @Test
+    void shouldParseSignsNearWordSeparatedByQuotes() {
+        String sentence = "\"word\", word.";
+        Text text = TextParser.parseStringToText(sentence);
+        assertThat(text.getSentences().get(0).getContent().get(1).getContent()).isEqualTo(",");
+    }
+
+    @Test
+    void shouldParseOneWordWithDashInside() {
+        String sentence = "some-word.";
+        Text text = TextParser.parseStringToText(sentence);
+        assertThat(text.getSentences().get(0).getContent().get(0).getContent()).isEqualTo("some-word");
+    }
+
+    @Test
+    void shouldParseTwoSentencesSeparatedByDot() {
+        String sentence = "sentence. sentence.";
+        Text text = TextParser.parseStringToText(sentence);
+        assertThat(text.getSentences().size()).isEqualTo(2);
+    }
+
+    @Test
+    void shouldParseTwoSentencesSeparatedByExclamation() {
+        String sentence = "sentence! sentence.";
+        Text text = TextParser.parseStringToText(sentence);
+        assertThat(text.getSentences().size()).isEqualTo(2);
+    }
+
+    @Test
+    void shouldParseTwoSentencesSeparatedByQuestion() {
+        String sentence = "sentence? sentence.";
+        Text text = TextParser.parseStringToText(sentence);
+        assertThat(text.getSentences().size()).isEqualTo(2);
     }
 }
