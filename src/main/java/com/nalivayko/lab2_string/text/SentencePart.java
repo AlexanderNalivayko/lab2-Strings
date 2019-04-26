@@ -8,7 +8,7 @@ public abstract class SentencePart {
         this.content = content;
     }
 
-    public String getContent(){
+    public String getContent() {
         return content;
     }
 
@@ -16,11 +16,8 @@ public abstract class SentencePart {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         SentencePart that = (SentencePart) o;
-
         return content != null ? content.equals(that.content) : that.content == null;
-
     }
 
     @Override

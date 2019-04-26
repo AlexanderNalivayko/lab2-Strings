@@ -10,7 +10,7 @@ public class Sentence {
     public Sentence() {
     }
 
-    public void add(SentencePart sentencePart){
+    public void add(SentencePart sentencePart) {
         content.add(sentencePart);
     }
 

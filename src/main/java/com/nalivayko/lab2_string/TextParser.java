@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextParser {
-
     private static final String WORD_AND_SIGN_REGEX = "([\\w-]+)([\\s\"\\)]?)([,;.?!]?)";
     private static final String SENTENCE_END_REGEX = "[.;!?]";
     private static final int WORD_GROUP = 1;
